@@ -17,6 +17,8 @@ class EmailController < ApplicationController
 
   def validate_params
     email = Validations::Email.new(params)
-    render json: { error: email.errors } && return unless email.valid?
+    return unless email.invalid?
+
+    render json: { error: email.errors }
   end
 end
