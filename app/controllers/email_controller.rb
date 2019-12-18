@@ -1,9 +1,10 @@
 class EmailController < ApplicationController
   before_action :validate_params
+
   def index; end
 
   def create
-    mail = Helper::Sendgrid.new(email_params)
+    mail = Helper::Sendgrid.new(params)
     render json: { 'message' => 'Email Sent' } if mail.send
   end
 
@@ -14,9 +15,8 @@ class EmailController < ApplicationController
 
   private
 
-  def email_params
-    params
-      .require(:email)
-      .permit(:to, :to_name, :from, :from_name, :subject, :body)
+  def validate_params
+    email = Validations::Email.new(params)
+    render json: { error: email.errors } && return unless email.valid?
   end
 end

@@ -8,7 +8,7 @@ module Helper
         [{ "to": [{ "email": "#{params[:to_name]} <#{params[:to]}>" }] }],
         "from": { "email": "#{params[:from_name]} <#{params[:from]}>" },
         "subject": params[:subject],
-        "content": [{ "type": 'text/plain', "value": params[:body] }]
+        "content": [{ "type": 'text/plain', "value": Nokogiri::HTML(params[:body]).text }]
       }
       @uri = 'https://api.sendgrid.com/v3/mail/send'
     end
