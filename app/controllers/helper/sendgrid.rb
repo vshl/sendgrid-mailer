@@ -1,23 +1,27 @@
 module Helper
   class Sendgrid
-    attr_reader :mail
+    attr_reader :request_body, :uri
 
     def initialize(params)
-      from = Email.new(email: params[:from])
-      to = Email.new(email: params[:to])
-      subject = params[:subject]
-      content = Content.new(type: 'text/plain', value: params[:body])
-      @mail = Mail.new(from, subject, to, content)
+      @request_body = {
+        "personalizations":
+        [{ "to": [{ "email": "#{params[:to_name]} <#{params[:to]}>" }] }],
+        "from": { "email": "#{params[:from_name]} <#{params[:from]}>" },
+        "subject": params[:subject],
+        "content": [{ "type": 'text/plain', "value": params[:body] }]
+      }
+      @uri = 'https://api.sendgrid.com/v3/mail/send'
     end
 
-    def response
-      client.mail._('send').post(request_body: mail.to_json)
+    def send
+      RestClient.post(uri, request_body.to_json, headers)
     end
 
     private
 
-    def client
-      SendGrid::API.new(api_key: ENV['SENDGRID_API_KEY']).client
+    def headers
+      { 'Authorization' => "Bearer #{ENV['SENDGRID_API_KEY']}",
+        'Content-Type' => 'application/json' }
     end
   end
 end
