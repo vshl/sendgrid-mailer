@@ -20,7 +20,7 @@ rbenv or similar ruby environment management tool
 gem install bundler -v 2.0.2
 
 # cd to root directory
-cd mailer/
+cd sendgrid-mailer/
 
 bundle install
 ```
