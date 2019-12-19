@@ -18,9 +18,6 @@ module Validations
       @from_name = params[:from_name]
       @subject = params[:subject]
       @body = params[:body]
-      params
-        .require(:email)
-        .permit(:to, :to_name, :from, :from_name, :subject, :body)
     end
   end
 end
