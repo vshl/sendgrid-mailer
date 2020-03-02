@@ -5,8 +5,8 @@ module Helper
     def initialize(params)
       @request_body = {
         "personalizations":
-        [{ "to": [{ "email": "#{params[:to_name]} <#{params[:to]}>" }] }],
-        "from": { "email": "#{params[:from_name]} <#{params[:from]}>" },
+        [{ "to": [{ "email": (params[:to]).to_s }] }],
+        "from": { "email": (params[:from]).to_s },
         "subject": params[:subject],
         "content": [{ "type": 'text/plain', "value": Nokogiri::HTML(params[:body]).text }]
       }
